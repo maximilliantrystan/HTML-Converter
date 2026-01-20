@@ -12,36 +12,48 @@ const GameDocumentation = () => {
   };
 
   const Section = ({ id, title, children, icon: Icon }: { id: string, title: string, children: React.ReactNode, icon: any }) => (
-    <div className="mb-5 border border-gray-200 rounded-xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-all duration-300">
+    <div className="mb-4 border border-gray-700/50 rounded-lg overflow-hidden bg-gray-900/40 backdrop-blur hover:bg-gray-900/60 transition-all duration-300 hover:border-gray-600/50">
       <button
         onClick={() => toggleSection(id)}
-        className="w-full px-6 py-4 bg-gradient-to-r from-indigo-600/5 to-purple-600/5 flex items-center justify-between hover:from-indigo-600/10 hover:to-purple-600/10 transition-all duration-200 border-b border-gray-100"
+        className="w-full px-6 py-4 bg-gradient-to-r from-cyan-600/10 to-blue-600/10 flex items-center justify-between hover:from-cyan-600/20 hover:to-blue-600/20 transition-all duration-200 border-b border-gray-700/30"
       >
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg">
+          <div className="p-2 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg">
             <Icon className="w-5 h-5 text-white" />
           </div>
-          <span className="font-semibold text-gray-800 text-lg">{title}</span>
+          <span className="font-semibold text-gray-100 text-lg">{title}</span>
         </div>
         <div className="transform transition-transform duration-300">
-          {expandedSections[id] ? <ChevronDown className="w-5 h-5 text-indigo-600" /> : <ChevronRight className="w-5 h-5 text-gray-400" />}
+          {expandedSections[id] ? <ChevronDown className="w-5 h-5 text-cyan-400" /> : <ChevronRight className="w-5 h-5 text-gray-500" />}
         </div>
       </button>
       {expandedSections[id] && (
-        <div className="p-6 bg-white animate-in fade-in duration-300">
+        <div className="p-6 bg-gray-950/50 backdrop-blur animate-in fade-in duration-300">
           {children}
         </div>
       )}
     </div>
   );
 
+  const SyntaxHighlight = (code: string) => {
+    return code
+      .replace(/\b(var|const|let|function|if|else|for|while|return|import|export|class|interface|type)\b/g, '<span class="text-cyan-400">$1</span>')
+      .replace(/\b(true|false|null|undefined)\b/g, '<span class="text-orange-400">$1</span>')
+      .replace(/("[^"]*"|\'[^\']*\'|`[^`]*`)/g, '<span class="text-emerald-400">$1</span>')
+      .replace(/\/\/[^\n]*/g, '<span class="text-gray-500">$&</span>')
+      .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
+      .replace(/(\(|\)|{|}|\[|\]|:|\.)/g, '<span class="text-gray-300">$1</span>');
+  };
+
   const CodeBlock = ({ code }: { code: string }) => {
     const lines = code.split('\n');
+    const highlightedLines = lines.map(line => SyntaxHighlight(line));
+
     return (
-      <div className="bg-gray-900 rounded-xl overflow-hidden my-4 border border-gray-800 shadow-lg">
+      <div className="bg-gray-950 rounded-lg overflow-hidden my-4 border border-gray-800 shadow-2xl">
         <div className="flex">
           {/* Line numbers */}
-          <div className="bg-gray-950 px-4 py-4 text-gray-600 text-right select-none font-mono text-sm border-r border-gray-800">
+          <div className="bg-gray-950/80 px-4 py-4 text-gray-600 text-right select-none font-mono text-sm border-r border-gray-800">
             {lines.map((_, index) => (
               <div key={index} className="leading-6 h-6">
                 {index + 1}
@@ -50,8 +62,10 @@ const GameDocumentation = () => {
           </div>
           {/* Code content */}
           <pre className="flex-1 p-4 overflow-x-auto">
-            <code className="text-gray-100 font-mono text-sm leading-6">
-              {code}
+            <code className="font-mono text-sm leading-6">
+              {highlightedLines.map((line, idx) => (
+                <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />
+              ))}
             </code>
           </pre>
         </div>
@@ -60,23 +74,23 @@ const GameDocumentation = () => {
   };
 
   const ParamTable = ({ params }: { params: any[] }) => (
-    <div className="overflow-x-auto my-4 rounded-lg border border-gray-200 shadow-sm">
+    <div className="overflow-x-auto my-4 rounded-lg border border-gray-700/50 shadow-lg">
       <table className="w-full">
         <thead>
-          <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-            <th className="px-4 py-3 text-left font-semibold">Parameter</th>
-            <th className="px-4 py-3 text-left font-semibold">Tipe</th>
-            <th className="px-4 py-3 text-left font-semibold">Default</th>
-            <th className="px-4 py-3 text-left font-semibold">Penjelasan</th>
+          <tr className="bg-gradient-to-r from-cyan-600/30 to-blue-600/30 border-b border-gray-700">
+            <th className="px-4 py-3 text-left font-semibold text-cyan-300">Parameter</th>
+            <th className="px-4 py-3 text-left font-semibold text-cyan-300">Tipe</th>
+            <th className="px-4 py-3 text-left font-semibold text-cyan-300">Default</th>
+            <th className="px-4 py-3 text-left font-semibold text-cyan-300">Penjelasan</th>
           </tr>
         </thead>
         <tbody>
           {params.map((param, idx) => (
-            <tr key={idx} className={idx % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'}>
-              <td className="px-4 py-3 font-mono text-sm text-gray-800">{param.name}</td>
-              <td className="px-4 py-3 font-mono text-sm text-indigo-600">{param.type}</td>
-              <td className="px-4 py-3 font-mono text-sm text-emerald-600">{param.default}</td>
-              <td className="px-4 py-3 text-sm text-gray-700">{param.desc}</td>
+            <tr key={idx} className={`border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors ${idx % 2 === 0 ? 'bg-gray-900/20' : 'bg-gray-800/10'}`}>
+              <td className="px-4 py-3 font-mono text-sm text-gray-300">{param.name}</td>
+              <td className="px-4 py-3 font-mono text-sm text-orange-400">{param.type}</td>
+              <td className="px-4 py-3 font-mono text-sm text-emerald-400">{param.default}</td>
+              <td className="px-4 py-3 text-sm text-gray-300">{param.desc}</td>
             </tr>
           ))}
         </tbody>
@@ -85,21 +99,21 @@ const GameDocumentation = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black p-8">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white p-10 rounded-3xl shadow-2xl mb-8 border border-white/10">
+        <div className="bg-gradient-to-br from-cyan-900/40 via-blue-900/40 to-gray-900/40 text-white p-10 rounded-2xl shadow-2xl mb-8 border border-cyan-500/20 backdrop-blur-xl">
           <div className="flex items-center gap-4 mb-3">
-            <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+            <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl shadow-lg">
               <Book className="w-8 h-8" />
             </div>
-            <h1 className="text-5xl font-bold">Dokumentasi Game Horror 3D</h1>
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Dokumentasi Game Horror 3D</h1>
           </div>
-          <p className="text-indigo-100 text-lg font-light mb-6">Panduan Lengkap untuk Siswa SMA - Penjelasan Baris per Baris</p>
+          <p className="text-gray-300 text-lg font-light mb-6">Panduan Lengkap untuk Siswa SMA - Penjelasan Baris per Baris</p>
           <div className="flex gap-3 flex-wrap">
-            <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium border border-white/30">Godot Engine 4.x</span>
-            <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium border border-white/30">GDScript</span>
-            <span className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium border border-white/30">3D Game</span>
+            <span className="bg-cyan-500/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium border border-cyan-500/40 text-cyan-300">Godot Engine 4.x</span>
+            <span className="bg-blue-500/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium border border-blue-500/40 text-blue-300">GDScript</span>
+            <span className="bg-purple-500/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium border border-purple-500/40 text-purple-300">3D Game</span>
           </div>
         </div>
 
@@ -1341,9 +1355,9 @@ var jc : bool`} />
         </Section>
 
         {/* Footer */}
-        <div className="mt-12 p-8 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl text-center border border-indigo-200 shadow-lg">
-          <p className="text-gray-700 font-medium mb-2">Dokumentasi ini dibuat dengan untuk memahami game development dengan Godot Engine</p>
-          <p className="text-2xl">🎮 Happy Game Development! 🚀</p>
+        <div className="mt-12 p-8 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 rounded-2xl text-center border border-cyan-500/30 backdrop-blur">
+          <p className="text-gray-300 font-medium mb-2">Dokumentasi ini dibuat dengan untuk memahami game development dengan Godot Engine</p>
+          <p className="text-2xl text-gray-300">🎮 Happy Game Development! 🚀</p>
         </div>
       </div>
     </div>
