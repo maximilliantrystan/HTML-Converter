@@ -36,30 +36,29 @@ const GameDocumentation = () => {
   );
 
   const SyntaxHighlight = (code: string) => {
-    return code
-      // Keywords - Cyan
-      .replace(/\b(var|const|let|function|if|else|for|while|return|import|export|class|interface|type|new|this|true|false|null|undefined)\b/g, '<span class="text-cyan-400">$1</span>')
-      // Strings - Emerald
-      .replace(/("[^"]*"|\'[^\']*\'|`[^`]*`)/g, '<span class="text-emerald-400">$1</span>')
-      // Comments - Gray
-      .replace(/\/\/[^\n]*/g, '<span class="text-gray-500">$&</span>')
-      // Numbers - Orange
-      .replace(/\b(\d+)\b/g, '<span class="text-orange-400">$1</span>')
-      // Booleans & Special - Yellow
-      .replace(/\b(true|false)\b/g, '<span class="text-yellow-400">$1</span>')
-      // Operators & Punctuation - Pink
-      .replace(/([=+\-*/><&|!]+)/g, '<span class="text-pink-400">$1</span>')
-      // Brackets & Parens - Purple
-      .replace(/([(){}[\].,;:])/g, '<span class="text-purple-400">$1</span>')
-      // Wrap in default light color for anything else
-      .split('</span>').map((part, idx) => {
-        if (idx === 0) return part;
-        // Add default color span if part doesn't start with a span
-        if (!part.startsWith('<span')) {
-          return '<span class="text-gray-200">' + part + '</span></span>';
-        }
-        return part + '</span>';
-      }).join('');
+    // First, wrap everything in default gray color
+    let highlighted = code.replace(/(.+)/g, '<span class="text-gray-200">$1</span>');
+    
+    // Then apply specific colors, replacing the gray wrapper
+    // Keywords - Cyan
+    highlighted = highlighted.replace(/<span class="text-gray-200">(var|const|let|function|if|else|for|while|return|import|export|class|interface|type|new|this|true|false|null|undefined)<\/span>/g, '<span class="text-cyan-400">$1</span>');
+    
+    // Strings - Emerald
+    highlighted = highlighted.replace(/<span class="text-gray-200">(["\'`][^"\'`]*["\'`])<\/span>/g, '<span class="text-emerald-400">$1</span>');
+    
+    // Comments - Dark Gray
+    highlighted = highlighted.replace(/<span class="text-gray-200">(\/\/.*)<\/span>/g, '<span class="text-gray-500">$1</span>');
+    
+    // Numbers - Orange
+    highlighted = highlighted.replace(/<span class="text-gray-200">(\d+)<\/span>/g, '<span class="text-orange-400">$1</span>');
+    
+    // Operators - Pink
+    highlighted = highlighted.replace(/<span class="text-gray-200">([=+\-*/<>!&|]+)<\/span>/g, '<span class="text-pink-400">$1</span>');
+    
+    // Brackets & Punctuation - Purple
+    highlighted = highlighted.replace(/<span class="text-gray-200">([(){}[\].,;:*])<\/span>/g, '<span class="text-purple-400">$1</span>');
+    
+    return highlighted;
   };
 
   const CodeBlock = ({ code }: { code: string }) => {
