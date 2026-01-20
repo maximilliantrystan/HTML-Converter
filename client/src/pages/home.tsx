@@ -36,29 +36,82 @@ const GameDocumentation = () => {
   );
 
   const SyntaxHighlight = (code: string) => {
-    // First, wrap everything in default gray color
-    let highlighted = code.replace(/(.+)/g, '<span class="text-gray-200">$1</span>');
-    
-    // Then apply specific colors, replacing the gray wrapper
-    // Keywords - Cyan
-    highlighted = highlighted.replace(/<span class="text-gray-200">(var|const|let|function|if|else|for|while|return|import|export|class|interface|type|new|this|true|false|null|undefined)<\/span>/g, '<span class="text-cyan-400">$1</span>');
-    
-    // Strings - Emerald
-    highlighted = highlighted.replace(/<span class="text-gray-200">(["\'`][^"\'`]*["\'`])<\/span>/g, '<span class="text-emerald-400">$1</span>');
-    
-    // Comments - Dark Gray
-    highlighted = highlighted.replace(/<span class="text-gray-200">(\/\/.*)<\/span>/g, '<span class="text-gray-500">$1</span>');
-    
-    // Numbers - Orange
-    highlighted = highlighted.replace(/<span class="text-gray-200">(\d+)<\/span>/g, '<span class="text-orange-400">$1</span>');
-    
-    // Operators - Pink
-    highlighted = highlighted.replace(/<span class="text-gray-200">([=+\-*/<>!&|]+)<\/span>/g, '<span class="text-pink-400">$1</span>');
-    
-    // Brackets & Punctuation - Purple
-    highlighted = highlighted.replace(/<span class="text-gray-200">([(){}[\].,;:*])<\/span>/g, '<span class="text-purple-400">$1</span>');
-    
-    return highlighted;
+    let result = '';
+    let i = 0;
+
+    while (i < code.length) {
+      // Strings
+      if (code[i] === '"' || code[i] === "'" || code[i] === '`') {
+        const quote = code[i];
+        let str = quote;
+        i++;
+        while (i < code.length && code[i] !== quote) {
+          str += code[i];
+          i++;
+        }
+        if (i < code.length) str += code[i++];
+        result += `<span class="text-emerald-400">${str}</span>`;
+        continue;
+      }
+
+      // Comments
+      if (code.substr(i, 2) === '//') {
+        let comment = '';
+        while (i < code.length && code[i] !== '\n') {
+          comment += code[i++];
+        }
+        result += `<span class="text-gray-500">${comment}</span>`;
+        continue;
+      }
+
+      // Numbers
+      if (/\d/.test(code[i])) {
+        let num = '';
+        while (i < code.length && /[\d.]/.test(code[i])) {
+          num += code[i++];
+        }
+        result += `<span class="text-orange-400">${num}</span>`;
+        continue;
+      }
+
+      // Identifiers and Keywords
+      if (/[a-zA-Z_]/.test(code[i])) {
+        let ident = '';
+        while (i < code.length && /[a-zA-Z0-9_]/.test(code[i])) {
+          ident += code[i++];
+        }
+        const keywords = ['var', 'const', 'let', 'function', 'if', 'else', 'for', 'while', 'return', 'import', 'export', 'class', 'interface', 'type', 'new', 'this', 'true', 'false', 'null', 'undefined'];
+        if (keywords.includes(ident)) {
+          result += `<span class="text-cyan-400">${ident}</span>`;
+        } else {
+          result += `<span class="text-gray-200">${ident}</span>`;
+        }
+        continue;
+      }
+
+      // Operators
+      if (/[=+\-*/<>!&|]/.test(code[i])) {
+        let op = '';
+        while (i < code.length && /[=+\-*/<>!&|]/.test(code[i])) {
+          op += code[i++];
+        }
+        result += `<span class="text-pink-400">${op}</span>`;
+        continue;
+      }
+
+      // Brackets and punctuation
+      if (/[(){}[\].,;:*]/.test(code[i])) {
+        result += `<span class="text-purple-400">${code[i]}</span>`;
+        i++;
+        continue;
+      }
+
+      // Whitespace and everything else
+      result += code[i];
+      i++;
+    }
+
+    return result;
   };
 
   const CodeBlock = ({ code }: { code: string }) => {
