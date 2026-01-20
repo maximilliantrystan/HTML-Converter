@@ -1,5 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "startCommand": "node dist/index.cjs"
+  "outputDirectory": "dist"
 }
