@@ -129,7 +129,7 @@ const GameDocumentation = () => {
           <p className="text-gray-300 text-lg font-light mb-6">Panduan Lengkap untuk Siswa SMA - Penjelasan Baris per Baris</p>
           <div className="flex gap-3 flex-wrap">
             <span className="bg-cyan-500/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium border border-cyan-500/40 text-cyan-300">Godot Engine 4.x</span>
-            <span className="bg-blue-500/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium border border-blue-500/40 text-blue-300">GDScript</span>
+            <span className="bg-blue-900/20 border border-blue-500/40 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium border border-blue-500/40 text-blue-300">GDScript</span>
             <span className="bg-purple-500/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium border border-purple-500/40 text-purple-300">3D Game</span>
           </div>
         </div>
@@ -202,7 +202,7 @@ const GameDocumentation = () => {
                 <strong>Analogi sederhana:</strong> Seperti "autopilot" untuk animasi. Kamu bilang: 
                 "Pindahkan objek ini dari posisi A ke B dalam 2 detik", lalu Godot otomatis gerakin smooth.
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Tanpa Tween (manual, ribet):</strong></p>
                 <CodeBlock code={`# Harus tulis sendiri pergerakan setiap frame
 position.x += 0.1  # Gerak dikit-dikit tiap frame
@@ -233,7 +233,7 @@ tween.tween_property(objek, "position", Vector2(10, 5), 2.0)
                 <strong>Analogi sederhana:</strong> Seperti alarm atau notifikasi HP. Ketika sesuatu terjadi, 
                 signal kasih tau semua yang "subscribe" (yang mau dengerin).
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Contoh di dunia nyata:</strong></p>
                 <p className="text-sm text-gray-200">
                   • Tombol diklik → signal "pressed" muncul → fungsi _on_pressed() dipanggil<br/>
@@ -262,7 +262,7 @@ func _on_button_pressed():
               <p className="text-gray-300 mb-2">
                 <strong>Analogi sederhana:</strong> Alamat di dunia 3D. Vector3 punya 3 angka: X, Y, Z.
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Sistem koordinat:</strong></p>
                 <p className="text-sm text-gray-200">
                   • <strong>X</strong> = kiri-kanan (minus = kiri, plus = kanan)<br/>
@@ -293,7 +293,7 @@ position.y += 1  # Sekarang jadi (5, 3, 3)`} />
               <p className="text-gray-300 mb-2">
                 <strong>Analogi sederhana:</strong> Gerakan "smooth" dari A ke B. Bukan lompat langsung, tapi pelan-pelan.
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Cara kerja:</strong></p>
                 <CodeBlock code={`# lerp(dari, ke, berapa_persen)
 # lerp(0, 10, 0.5) = 5 (tengah-tengah antara 0 dan 10)
@@ -315,7 +315,7 @@ rotation.y = lerp(rotation.y, target_rotation, 0.1)
               <p className="text-gray-300 mb-2">
                 <strong>Analogi sederhana:</strong> Seperti pause di tengah kode. "Tunggu dulu sampai sesuatu selesai, baru lanjut."
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Tanpa await (langsung, gak nunggu):</strong></p>
                 <CodeBlock code={`print("Mulai animasi")
 tween.tween_property(...)  # Animasi jalan
@@ -341,7 +341,7 @@ print("3 detik sudah lewat!")`} />
               <p className="text-gray-300 mb-2">
                 <strong>Analogi sederhana:</strong> Game Godot seperti pohon keluarga. Ada parent, child, sibling.
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Contoh struktur:</strong></p>
                 <CodeBlock code={`Player (parent)
 ├── Camera3D (child)
@@ -369,7 +369,7 @@ print("3 detik sudah lewat!")`} />
                 <strong>Analogi sederhana:</strong> Seperti "settings" yang bisa diubah tanpa edit kode. 
                 Game designer bisa tweak nilai tanpa bantuan programmer!
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Tanpa @export:</strong></p>
                 <CodeBlock code={`# Harus edit kode tiap mau ganti speed
 var speed = 5.0
@@ -400,7 +400,7 @@ var speed = 5.0
               <p className="text-gray-300 mb-2">
                 <strong>Analogi sederhana:</strong> Velocity = "kecepatan dan arah". move_and_slide = "jalan sesuai velocity tapi jangan tembus dinding".
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Cara kerja:</strong></p>
                 <CodeBlock code={`# Velocity punya 3 komponen: x, y, z
 velocity = Vector3(5, 0, 3)
@@ -432,7 +432,7 @@ move_and_slide()  # Aplikasikan gerakan`} />
                 <strong>Analogi sederhana:</strong> Seperti sinar laser dari Star Wars, tapi invisible. 
                 Dipakai untuk cek "apa ada sesuatu di depan sana?"
               </p>
-              <div className="bg-blue-50 p-3 rounded mt-2">
+              <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Contoh penggunaan:</strong></p>
                 <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
                   <li>Monster cek "apa aku bisa lihat player?" → RayCast dari mata monster ke player</li>
@@ -465,7 +465,7 @@ else:
         {/* Button.gd */}
         <Section id="button" title="🔘 button.gd - Script Tombol Menu" icon={Code}>
           <div className="space-y-4">
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <div className="bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
               <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Script ini mengatur tombol di menu utama. Tombol akan berkedip (blink) untuk menarik perhatian, 
                 dan saat diklik akan memulai animasi transisi (fade UI → gerak kamera → fade to black → ganti scene).
@@ -630,7 +630,7 @@ else:
         {/* Spot Light */}
         <Section id="spotlight" title="💡 spot_light_3d.gd - Efek Lampu Berkedip Horror" icon={Code}>
           <div className="space-y-4">
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <div className="bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
               <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Membuat efek lampu berkedip (flicker) untuk atmosfer horror. 
                 Ada 5 pattern berbeda: Random, Pulse, Stutter, Death, dan Mixed.
@@ -762,7 +762,7 @@ else:
         {/* Menu Camera */}
         <Section id="menucam" title="📷 menucam.gd - Camera Menu dengan Shake & Music" icon={Code}>
           <div className="space-y-4">
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <div className="bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
               <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Camera di main menu dengan efek shake halus untuk atmosfer horror, 
                 plus background music yang loop dan fade out saat transisi ke scene lain.
@@ -878,7 +878,7 @@ else:
         {/* Player.gd - SCRIPT BARU! */}
         <Section id="player" title="🎮 player.gd - Kontrol Karakter Pemain" icon={Code}>
           <div className="space-y-4">
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <div className="bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
               <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Script ini mengontrol semua yang berhubungan dengan pemain: 
                 gerakan (WASD), lompat, sprint, rotasi kamera dengan mouse, head bobbing saat jalan, 
@@ -1236,7 +1236,7 @@ var jc : bool`} />
             </div>
 
             <h3 className="text-lg font-bold text-gray-100 mt-6">Sistem Input Map</h3>
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <div className="bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Input Actions yang Digunakan:</p>
               <ParamTable params={[
                 {name: "move_forward", type: "Input", default: "W", desc: "Jalan ke depan"},
