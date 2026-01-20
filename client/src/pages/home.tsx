@@ -1333,38 +1333,38 @@ var jc : bool`} />
               <div className="space-y-3">
                 <div>
                   <p className="font-semibold text-sm text-gray-50">Monster stuck/tidak bergerak:</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Pastikan NavMesh sudah di-bake di NavigationRegion3D</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Cek patrol_radius tidak terlalu besar</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Gunakan debug print untuk lihat is_target_reachable()</p>
+                  <p className="text-sm text-gray-200">• Pastikan NavMesh sudah di-bake di NavigationRegion3D</p>
+                  <p className="text-sm text-gray-200">• Cek patrol_radius tidak terlalu besar</p>
+                  <p className="text-sm text-gray-200">• Gunakan debug print untuk lihat is_target_reachable()</p>
                 </div>
                 <div>
                   <p className="font-semibold text-sm text-gray-50">Monster tidak detect player:</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Cek player sudah ada di group "player"</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Pastikan detection_radius cukup besar</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Cek collision layer RayCast dan player</p>
+                  <p className="text-sm text-gray-200">• Cek player sudah ada di group "player"</p>
+                  <p className="text-sm text-gray-200">• Pastikan detection_radius cukup besar</p>
+                  <p className="text-sm text-gray-200">• Cek collision layer RayCast dan player</p>
                 </div>
                 <div>
                   <p className="font-semibold text-sm text-gray-50">Audio tidak loop:</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Cek tipe audio file (WAV/OGG/MP3)</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Set loop_mode sesuai tipe file</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Pastikan AudioStreamPlayer tidak one_shot</p>
+                  <p className="text-sm text-gray-200">• Cek tipe audio file (WAV/OGG/MP3)</p>
+                  <p className="text-sm text-gray-200">• Set loop_mode sesuai tipe file</p>
+                  <p className="text-sm text-gray-200">• Pastikan AudioStreamPlayer tidak one_shot</p>
                 </div>
                 <div>
                   <p className="font-semibold text-sm text-gray-50">Transisi scene patah-patah:</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Gunakan set_parallel(true) untuk animasi bersamaan</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Pastikan total_time dihitung dengan benar</p>
-                  <p className="text-sm text-gray-300 text-gray-600">• Gunakan await untuk sinkronisasi</p>
+                  <p className="text-sm text-gray-200">• Gunakan set_parallel(true) untuk animasi bersamaan</p>
+                  <p className="text-sm text-gray-200">• Pastikan total_time dihitung dengan benar</p>
+                  <p className="text-sm text-gray-200">• Gunakan await untuk sinkronisasi</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-300 p-6 rounded-lg mt-6 text-center">
+            <div className="bg-gradient-to-r from-indigo-900/20 to-purple-900/20 border border-indigo-700/50 p-6 rounded-lg mt-6 text-center">
               <h3 className="text-2xl font-bold text-gray-100 mb-2">🎉 Selamat!</h3>
               <p className="text-gray-300 mb-4">
                 Kamu telah mempelajari konsep-konsep penting dalam game development: AI, Animation, Audio, UI/UX, dan State Management. 
                 Terus eksplorasi dan jangan takut untuk bereksperimen!
               </p>
-              <p className="text-sm text-gray-300 text-gray-600 italic">
+              <p className="text-sm text-gray-200 italic">
                 "The best way to learn is by doing. Keep coding, keep creating!" 💻✨
               </p>
             </div>
