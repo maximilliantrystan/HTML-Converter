@@ -37,12 +37,29 @@ const GameDocumentation = () => {
 
   const SyntaxHighlight = (code: string) => {
     return code
-      .replace(/\b(var|const|let|function|if|else|for|while|return|import|export|class|interface|type)\b/g, '<span class="text-cyan-400">$1</span>')
-      .replace(/\b(true|false|null|undefined)\b/g, '<span class="text-orange-400">$1</span>')
+      // Keywords - Cyan
+      .replace(/\b(var|const|let|function|if|else|for|while|return|import|export|class|interface|type|new|this|true|false|null|undefined)\b/g, '<span class="text-cyan-400">$1</span>')
+      // Strings - Emerald
       .replace(/("[^"]*"|\'[^\']*\'|`[^`]*`)/g, '<span class="text-emerald-400">$1</span>')
+      // Comments - Gray
       .replace(/\/\/[^\n]*/g, '<span class="text-gray-500">$&</span>')
-      .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
-      .replace(/(\(|\)|{|}|\[|\]|:|\.)/g, '<span class="text-gray-300">$1</span>');
+      // Numbers - Orange
+      .replace(/\b(\d+)\b/g, '<span class="text-orange-400">$1</span>')
+      // Booleans & Special - Yellow
+      .replace(/\b(true|false)\b/g, '<span class="text-yellow-400">$1</span>')
+      // Operators & Punctuation - Pink
+      .replace(/([=+\-*/><&|!]+)/g, '<span class="text-pink-400">$1</span>')
+      // Brackets & Parens - Purple
+      .replace(/([(){}[\].,;:])/g, '<span class="text-purple-400">$1</span>')
+      // Wrap in default light color for anything else
+      .split('</span>').map((part, idx) => {
+        if (idx === 0) return part;
+        // Add default color span if part doesn't start with a span
+        if (!part.startsWith('<span')) {
+          return '<span class="text-gray-200">' + part + '</span></span>';
+        }
+        return part + '</span>';
+      }).join('');
   };
 
   const CodeBlock = ({ code }: { code: string }) => {
@@ -53,7 +70,7 @@ const GameDocumentation = () => {
       <div className="bg-gray-950 rounded-lg overflow-hidden my-4 border border-gray-800 shadow-2xl">
         <div className="flex">
           {/* Line numbers */}
-          <div className="bg-gray-950/80 px-4 py-4 text-gray-600 text-right select-none font-mono text-sm border-r border-gray-800">
+          <div className="bg-gray-950/80 px-4 py-4 text-gray-400 text-right select-none font-mono text-sm border-r border-gray-800">
             {lines.map((_, index) => (
               <div key={index} className="leading-6 h-6">
                 {index + 1}
@@ -62,7 +79,7 @@ const GameDocumentation = () => {
           </div>
           {/* Code content */}
           <pre className="flex-1 p-4 overflow-x-auto">
-            <code className="font-mono text-sm leading-6">
+            <code className="font-mono text-sm leading-6 text-gray-200">
               {highlightedLines.map((line, idx) => (
                 <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />
               ))}
@@ -87,10 +104,10 @@ const GameDocumentation = () => {
         <tbody>
           {params.map((param, idx) => (
             <tr key={idx} className={`border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors ${idx % 2 === 0 ? 'bg-gray-900/20' : 'bg-gray-800/10'}`}>
-              <td className="px-4 py-3 font-mono text-sm text-gray-300">{param.name}</td>
+              <td className="px-4 py-3 font-mono text-sm text-gray-200">{param.name}</td>
               <td className="px-4 py-3 font-mono text-sm text-orange-400">{param.type}</td>
               <td className="px-4 py-3 font-mono text-sm text-emerald-400">{param.default}</td>
-              <td className="px-4 py-3 text-sm text-gray-300">{param.desc}</td>
+              <td className="px-4 py-3 text-sm text-gray-200">{param.desc}</td>
             </tr>
           ))}
         </tbody>
@@ -127,7 +144,7 @@ const GameDocumentation = () => {
             </p>
             
             <h4 className="text-lg font-semibold text-cyan-300 mt-4 mb-2">Fitur Utama:</h4>
-            <ul className="list-disc list-inside space-y-2 text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-gray-200">
               <li><strong>Sistem Lives:</strong> Pemain memiliki 3 nyawa (hari), setiap tertangkap kembali ke hari berikutnya</li>
               <li><strong>AI Monster:</strong> Monster yang bisa patroli dan mengejar pemain dengan Line of Sight detection</li>
               <li><strong>Efek Cahaya:</strong> Lampu berkedip (flicker) untuk atmosfer horror</li>
@@ -137,7 +154,7 @@ const GameDocumentation = () => {
             </ul>
 
             <h4 className="text-lg font-semibold text-cyan-300 mt-4 mb-2">File-file Script:</h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-300">
+            <ul className="list-disc list-inside space-y-1 text-gray-200">
               <li><code className="bg-gray-800 px-2 py-1 rounded text-emerald-400">button.gd</code> - Script untuk tombol menu dengan animasi</li>
               <li><code className="bg-gray-800 px-2 py-1 rounded text-emerald-400">game_manager.gd</code> - Mengatur logika game, respawn, win/lose condition</li>
               <li><code className="bg-gray-800 px-2 py-1 rounded text-emerald-400">menucam.gd</code> - Camera di menu utama dengan efek shake dan music</li>
@@ -165,13 +182,13 @@ const GameDocumentation = () => {
                 kadang 30 fps, kadang 60 fps. Delta adalah "jeda waktu" antara frame satu dengan frame berikutnya.
               </p>
               <div className="bg-blue-900/20 border border-blue-700/50 p-3 rounded mt-2 border border-blue-700/50">
-                <p className="text-sm text-gray-300 text-blue-300"><strong>Contoh:</strong></p>
-                <p className="text-sm text-gray-300 text-blue-300">• Jika game berjalan 60 FPS, delta ≈ 0.016 detik (1/60)</p>
-                <p className="text-sm text-gray-300 text-blue-300">• Jika game lag dan cuma 30 FPS, delta ≈ 0.033 detik (1/30)</p>
+                <p className="text-sm text-blue-300"><strong>Contoh:</strong></p>
+                <p className="text-sm text-blue-300">• Jika game berjalan 60 FPS, delta ≈ 0.016 detik (1/60)</p>
+                <p className="text-sm text-blue-300">• Jika game lag dan cuma 30 FPS, delta ≈ 0.033 detik (1/30)</p>
               </div>
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2 border border-emerald-700/50">
-                <p className="text-sm text-gray-300 text-emerald-300"><strong>Kenapa penting?</strong></p>
-                <p className="text-sm text-gray-300 text-emerald-300">
+                <p className="text-sm text-emerald-300"><strong>Kenapa penting?</strong></p>
+                <p className="text-sm text-emerald-300">
                   Tanpa delta, mobil di komputer cepat bergerak lebih kencang dari komputer lambat. 
                   Dengan delta, semua komputer geraknya sama: <code className="bg-gray-200 px-1">velocity * delta</code>
                 </p>
@@ -186,19 +203,19 @@ const GameDocumentation = () => {
                 "Pindahkan objek ini dari posisi A ke B dalam 2 detik", lalu Godot otomatis gerakin smooth.
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Tanpa Tween (manual, ribet):</strong></p>
+                <p className="text-sm text-gray-200"><strong>Tanpa Tween (manual, ribet):</strong></p>
                 <CodeBlock code={`# Harus tulis sendiri pergerakan setiap frame
 position.x += 0.1  # Gerak dikit-dikit tiap frame
 # Susah buat smooth, susah kontrol durasi`} />
               </div>
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Dengan Tween (otomatis, gampang):</strong></p>
+                <p className="text-sm text-gray-200"><strong>Dengan Tween (otomatis, gampang):</strong></p>
                 <CodeBlock code={`# Tinggal bilang "pindah ke posisi (10, 5) dalam 2 detik"
 var tween = create_tween()
 tween.tween_property(objek, "position", Vector2(10, 5), 2.0)
 # Godot yang handle smooth-nya!`} />
               </div>
-              <p className="text-sm text-gray-300 text-gray-300 mt-2">
+              <p className="text-sm text-gray-200 mt-2">
                 <strong>Istilah penting:</strong>
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
@@ -217,15 +234,15 @@ tween.tween_property(objek, "position", Vector2(10, 5), 2.0)
                 signal kasih tau semua yang "subscribe" (yang mau dengerin).
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Contoh di dunia nyata:</strong></p>
-                <p className="text-sm text-gray-300 text-gray-300">
+                <p className="text-sm text-gray-200"><strong>Contoh di dunia nyata:</strong></p>
+                <p className="text-sm text-gray-200">
                   • Tombol diklik → signal "pressed" muncul → fungsi _on_pressed() dipanggil<br/>
                   • Player masuk area → signal "body_entered" muncul → fungsi _on_area_entered() dipanggil<br/>
                   • Timer habis → signal "timeout" muncul → fungsi tertentu dipanggil
                 </p>
               </div>
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Cara pakai Signal:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Cara pakai Signal:</strong></p>
                 <CodeBlock code={`# "Aku mau dengerin signal pressed dari button ini"
 button.pressed.connect(_on_button_pressed)
 
@@ -233,7 +250,7 @@ button.pressed.connect(_on_button_pressed)
 func _on_button_pressed():
     print("Button diklik!")`} />
               </div>
-              <p className="text-sm text-gray-300 text-gray-300 mt-2">
+              <p className="text-sm text-gray-200 mt-2">
                 <strong>Kenapa gak langsung panggil fungsi?</strong> Biar fleksibel! 
                 Satu signal bisa kasih tau banyak fungsi sekaligus (one-to-many).
               </p>
@@ -246,8 +263,8 @@ func _on_button_pressed():
                 <strong>Analogi sederhana:</strong> Alamat di dunia 3D. Vector3 punya 3 angka: X, Y, Z.
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Sistem koordinat:</strong></p>
-                <p className="text-sm text-gray-300 text-gray-300">
+                <p className="text-sm text-gray-200"><strong>Sistem koordinat:</strong></p>
+                <p className="text-sm text-gray-200">
                   • <strong>X</strong> = kiri-kanan (minus = kiri, plus = kanan)<br/>
                   • <strong>Y</strong> = atas-bawah (minus = bawah, plus = atas)<br/>
                   • <strong>Z</strong> = depan-belakang (minus = belakang, plus = depan)
@@ -261,7 +278,7 @@ position = Vector3(5, 2, 3)
 # Pindah 1 meter ke atas
 position.y += 1  # Sekarang jadi (5, 3, 3)`} />
               </div>
-              <p className="text-sm text-gray-300 text-gray-300 mt-2">
+              <p className="text-sm text-gray-200 mt-2">
                 <strong>Global vs Local:</strong>
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside">
@@ -277,7 +294,7 @@ position.y += 1  # Sekarang jadi (5, 3, 3)`} />
                 <strong>Analogi sederhana:</strong> Gerakan "smooth" dari A ke B. Bukan lompat langsung, tapi pelan-pelan.
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Cara kerja:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Cara kerja:</strong></p>
                 <CodeBlock code={`# lerp(dari, ke, berapa_persen)
 # lerp(0, 10, 0.5) = 5 (tengah-tengah antara 0 dan 10)
 # lerp(0, 10, 0.1) = 1 (10% dari 0 ke 10)
@@ -287,7 +304,7 @@ position.y += 1  # Sekarang jadi (5, 3, 3)`} />
 rotation.y = lerp(rotation.y, target_rotation, 0.1)
 # Setiap frame, putar 10% menuju target = smooth!`} />
               </div>
-              <p className="text-sm text-gray-300 text-gray-300 mt-2">
+              <p className="text-sm text-gray-200 mt-2">
                 <strong>Kenapa pakai lerp?</strong> Biar gerakan gak kaku. Seperti beda antara "melompat" vs "berjalan pelan".
               </p>
             </div>
@@ -299,18 +316,18 @@ rotation.y = lerp(rotation.y, target_rotation, 0.1)
                 <strong>Analogi sederhana:</strong> Seperti pause di tengah kode. "Tunggu dulu sampai sesuatu selesai, baru lanjut."
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Tanpa await (langsung, gak nunggu):</strong></p>
+                <p className="text-sm text-gray-200"><strong>Tanpa await (langsung, gak nunggu):</strong></p>
                 <CodeBlock code={`print("Mulai animasi")
 tween.tween_property(...)  # Animasi jalan
 print("Ganti scene")  # LANGSUNG ganti, animasi belum selesai!`} />
               </div>
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Dengan await (tunggu dulu):</strong></p>
+                <p className="text-sm text-gray-200"><strong>Dengan await (tunggu dulu):</strong></p>
                 <CodeBlock code={`print("Mulai animasi")
 await tween.finished  # TUNGGU sampai animasi selesai
 print("Ganti scene")  # Baru ganti setelah animasi done`} />
               </div>
-              <p className="text-sm text-gray-300 text-gray-300 mt-2">
+              <p className="text-sm text-gray-200 mt-2">
                 <strong>Contoh lain:</strong>
               </p>
               <CodeBlock code={`# Tunggu 3 detik
@@ -325,7 +342,7 @@ print("3 detik sudah lewat!")`} />
                 <strong>Analogi sederhana:</strong> Game Godot seperti pohon keluarga. Ada parent, child, sibling.
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Contoh struktur:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Contoh struktur:</strong></p>
                 <CodeBlock code={`Player (parent)
 ├── Camera3D (child)
 ├── CollisionShape3D (child)
@@ -335,7 +352,7 @@ print("3 detik sudah lewat!")`} />
 # Kalau Player pindah, Camera ikut pindah`} />
               </div>
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Istilah penting:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Istilah penting:</strong></p>
                 <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
                   <li><code className="bg-gray-200 px-1">add_child(node)</code> = Tambahkan node sebagai anak</li>
                   <li><code className="bg-gray-200 px-1">get_parent()</code> = Ambil node parent</li>
@@ -353,20 +370,20 @@ print("3 detik sudah lewat!")`} />
                 Game designer bisa tweak nilai tanpa bantuan programmer!
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Tanpa @export:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Tanpa @export:</strong></p>
                 <CodeBlock code={`# Harus edit kode tiap mau ganti speed
 var speed = 5.0
 
 # Mau ganti jadi 10? Harus edit script, save, reload`} />
               </div>
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Dengan @export:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Dengan @export:</strong></p>
                 <CodeBlock code={`# Muncul di Inspector Godot, bisa diedit langsung!
 @export var speed: float = 5.0
 
 # Tinggal geser slider di Inspector, langsung update!`} />
               </div>
-              <p className="text-sm text-gray-300 text-gray-300 mt-2">
+              <p className="text-sm text-gray-200 mt-2">
                 <strong>Macam-macam @export:</strong>
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
@@ -384,7 +401,7 @@ var speed = 5.0
                 <strong>Analogi sederhana:</strong> Velocity = "kecepatan dan arah". move_and_slide = "jalan sesuai velocity tapi jangan tembus dinding".
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Cara kerja:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Cara kerja:</strong></p>
                 <CodeBlock code={`# Velocity punya 3 komponen: x, y, z
 velocity = Vector3(5, 0, 3)
 # Artinya: gerak 5 m/s ke kanan, 0 m/s vertikal, 3 m/s ke depan
@@ -394,7 +411,7 @@ move_and_slide()
 # Godot otomatis: gerak sesuai velocity + detect tabrakan`} />
               </div>
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Contoh gravity:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Contoh gravity:</strong></p>
                 <CodeBlock code={`# Kalau tidak di lantai, jatuh ke bawah
 if not is_on_floor():
     velocity.y -= gravity * delta  # Turun makin cepat
@@ -403,7 +420,7 @@ else:
 
 move_and_slide()  # Aplikasikan gerakan`} />
               </div>
-              <p className="text-sm text-gray-300 text-gray-300 mt-2">
+              <p className="text-sm text-gray-200 mt-2">
                 <strong>Kenapa * delta?</strong> Biar gerakan konsisten di semua FPS! (ingat penjelasan delta di atas)
               </p>
             </div>
@@ -416,7 +433,7 @@ move_and_slide()  # Aplikasikan gerakan`} />
                 Dipakai untuk cek "apa ada sesuatu di depan sana?"
               </p>
               <div className="bg-blue-50 p-3 rounded mt-2">
-                <p className="text-sm text-gray-300 text-gray-300"><strong>Contoh penggunaan:</strong></p>
+                <p className="text-sm text-gray-200"><strong>Contoh penggunaan:</strong></p>
                 <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
                   <li>Monster cek "apa aku bisa lihat player?" → RayCast dari mata monster ke player</li>
                   <li>Sniper cek "apa peluru bakal kena target?" → RayCast dari senjata ke target</li>
@@ -437,7 +454,7 @@ else:
             </div>
 
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 p-4 rounded mt-6">
-              <p className="text-sm text-gray-300 font-semibold text-gray-100">
+              <p className="text-sm text-gray-300 font-semibold text-gray-50">
                 ✅ Setelah paham konsep dasar di atas, kamu siap untuk baca penjelasan kode di bawah! 
                 Kalau lupa, bisa scroll ke atas untuk baca lagi kapan saja.
               </p>
@@ -449,7 +466,7 @@ else:
         <Section id="button" title="🔘 button.gd - Script Tombol Menu" icon={Code}>
           <div className="space-y-4">
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-              <p className="text-sm text-gray-300 text-gray-300">
+              <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Script ini mengatur tombol di menu utama. Tombol akan berkedip (blink) untuk menarik perhatian, 
                 dan saat diklik akan memulai animasi transisi (fade UI → gerak kamera → fade to black → ganti scene).
               </p>
@@ -485,7 +502,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2-4:</strong> Guard clause - jika sedang fading, return (prevent overlap)</li>
                 <li><strong>Baris 7:</strong> Layar mulai hitam penuh (alpha = 1)</li>
                 <li><strong>Baris 10-11:</strong> Set text "DAY 1" dengan font size 72px (besar)</li>
@@ -530,7 +547,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Fungsi ini dipanggil saat player mati TAPI masih ada nyawa</strong></li>
                 <li><strong>Baris 6:</strong> Increment hari (DAY 1 → DAY 2 → DAY 3)</li>
                 <li><strong>Baris 9:</strong> Langsung layar hitam (instant, tidak fade)</li>
@@ -567,7 +584,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Fungsi ini dipanggil saat nyawa habis (game over)</strong></li>
                 <li><strong>Baris 7-8:</strong> Fade to black selama 1 detik</li>
                 <li><strong>Baris 10:</strong> Tunggu fade selesai</li>
@@ -601,7 +618,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Fungsi ini dipanggil saat player berhasil escape</strong></li>
                 <li><strong>Baris 14:</strong> Color(0.2, 1.0, 0.3) = hijau terang (victory color)</li>
                 <li><strong>Perbedaan dengan game_over:</strong> Warna hijau vs merah, pesan positif vs negatif</li>
@@ -614,7 +631,7 @@ else:
         <Section id="spotlight" title="💡 spot_light_3d.gd - Efek Lampu Berkedip Horror" icon={Code}>
           <div className="space-y-4">
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-              <p className="text-sm text-gray-300 text-gray-300">
+              <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Membuat efek lampu berkedip (flicker) untuk atmosfer horror. 
                 Ada 5 pattern berbeda: Random, Pulse, Stutter, Death, dan Mixed.
               </p>
@@ -630,7 +647,7 @@ else:
 
             <h3 className="text-lg font-bold text-gray-100 mt-6">Enum Pattern</h3>
             <CodeBlock code={`@export_enum("Random", "Pulse", "Stutter", "Death", "Mixed") var pattern: int = 4`} />
-            <p className="text-gray-300">
+            <p className="text-gray-200">
               <strong>Penjelasan:</strong> @export_enum membuat dropdown di Inspector dengan 5 pilihan pattern. 
               Default = 4 (Mixed, yang paling kompleks dan horror).
             </p>
@@ -652,7 +669,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Konsep:</strong> Lampu berkedip secara random dengan interval tidak pasti</li>
                 <li><strong>Baris 2:</strong> Cek apakah sudah waktunya flicker berikutnya</li>
                 <li><strong>Baris 4:</strong> randf_range() generate angka random antara min dan max interval</li>
@@ -669,7 +686,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Konsep:</strong> Lampu berdenyut smooth seperti detak jantung</li>
                 <li><strong>Baris 2:</strong> sin() menghasilkan wave -1 sampai 1. TAU = 2*PI (360 derajat)</li>
                 <li><strong>* 0.5 + 0.5:</strong> Convert range -1..1 menjadi 0..1 (selalu positif)</li>
@@ -697,7 +714,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Konsep:</strong> Lampu kedip-kedip cepat (stutter) lalu normal, lalu stutter lagi</li>
                 <li><strong>Baris 4-9:</strong> Selama stutter_duration (0.1 detik), lampu on-off cepat 20x per detik</li>
                 <li><strong>Baris 6:</strong> int(time * 20) % 2 = cek genap/ganjil untuk toggle on/off</li>
@@ -728,7 +745,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Konsep:</strong> Kombinasi pulse + random flicker = efek paling realistis dan menakutkan</li>
                 <li><strong>Baris 3:</strong> Base pulse dengan amplitude lebih kecil (0.3) untuk efek subtle</li>
                 <li><strong>Baris 4:</strong> Target brightness = base_energy dikali pulse value</li>
@@ -746,7 +763,7 @@ else:
         <Section id="menucam" title="📷 menucam.gd - Camera Menu dengan Shake & Music" icon={Code}>
           <div className="space-y-4">
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-              <p className="text-sm text-gray-300 text-gray-300">
+              <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Camera di main menu dengan efek shake halus untuk atmosfer horror, 
                 plus background music yang loop dan fade out saat transisi ke scene lain.
               </p>
@@ -787,7 +804,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2:</strong> Simpan posisi awal camera sebagai base untuk shake effect</li>
                 <li><strong>Baris 5-6:</strong> Buat AudioStreamPlayer baru dan tambahkan sebagai child</li>
                 <li><strong>Baris 9-11:</strong> Set audio stream, volume, dan autoplay</li>
@@ -806,7 +823,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan Camera Shake:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2:</strong> Pastikan mouse cursor terlihat (tidak locked seperti saat gameplay)</li>
                 <li><strong>Baris 3:</strong> Increment time dengan delta * speed untuk kontrol kecepatan shake</li>
                 <li><strong>Baris 4:</strong> sin(time) menghasilkan wave -1 sampai 1, dikali amplitude untuk horizontal shake</li>
@@ -829,7 +846,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Parameter duration:</strong> Berapa lama fade out (default 1.0 detik)</li>
                 <li><strong>Baris 2-3:</strong> Validasi - cek apakah music player ada dan sedang playing</li>
                 <li><strong>Baris 6:</strong> Tween volume dari nilai sekarang ke -80db (hampir silent)</li>
@@ -848,7 +865,7 @@ else:
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Fungsi ini otomatis dipanggil saat ada node yang di-remove dari scene tree</strong></li>
                 <li><strong>Baris 3:</strong> Cek apakah yang di-remove adalah camera ini sendiri</li>
                 <li><strong>Baris 5-6:</strong> Jika ya, fade out music dengan durasi 0.5 detik</li>
@@ -862,7 +879,7 @@ else:
         <Section id="player" title="🎮 player.gd - Kontrol Karakter Pemain" icon={Code}>
           <div className="space-y-4">
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-              <p className="text-sm text-gray-300 text-gray-300">
+              <p className="text-sm text-gray-200">
                 <strong>Fungsi Utama:</strong> Script ini mengontrol semua yang berhubungan dengan pemain: 
                 gerakan (WASD), lompat, sprint, rotasi kamera dengan mouse, head bobbing saat jalan, 
                 flashlight, footstep sounds, sistem nyawa, dan respawn saat tertangkap monster.
@@ -871,7 +888,7 @@ else:
 
             <h3 className="text-lg font-bold text-gray-100 mt-4">Deklarasi Class & Inheritance</h3>
             <CodeBlock code="extends CharacterBody3D" />
-            <p className="text-gray-300">
+            <p className="text-gray-200">
               <strong>Penjelasan:</strong> Script ini extends (mewarisi) dari CharacterBody3D, yaitu node khusus Godot 
               untuk karakter yang bisa bergerak dengan fisika (gravity, collision, dll). Ini berbeda dari RigidBody3D 
               yang untuk objek fisik seperti bola atau kotak.
@@ -901,7 +918,7 @@ else:
               {name: "t_bob", type: "float", default: "0.0", desc: "Timer internal untuk hitung head bob (jangan diubah manual)"}
             ]} />
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-3 rounded mt-2">
-              <p className="text-sm text-gray-300 text-gray-300">
+              <p className="text-sm text-gray-200">
                 <strong>Apa itu Head Bob?</strong> Efek kamera naik-turun halus saat karakter berjalan, 
                 seperti di game FPS modern (CS:GO, Valorant). Ini bikin gerakan lebih realistis dan immersive.
               </p>
@@ -924,7 +941,7 @@ else:
 @onready var flashlight: SpotLight3D = $Head/Camera3D/Flashlight
 @onready var footstep_player: AudioStreamPlayer = $FootstepPlayer`} />
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-3 rounded mt-2">
-              <p className="text-sm text-gray-300 text-gray-300 mb-2">
+              <p className="text-sm text-gray-200 mb-2">
                 <strong>Penjelasan @onready:</strong> Variabel ini diisi otomatis saat node ready dengan mengambil child nodes.
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
@@ -972,7 +989,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan Baris per Baris:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2:</strong> <code>MOUSE_MODE_CAPTURED</code> = cursor hilang dan terkunci di tengah (seperti FPS games). Mouse movement jadi camera rotation</li>
                 <li><strong>Baris 3-4:</strong> Set flashlight visible/invisible sesuai setting flashlight_enabled</li>
                 <li><strong>Baris 7-9:</strong> Jika footstep_player belum ada di scene, buat baru secara programmatic (fallback)</li>
@@ -1001,7 +1018,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan Mouse Look System:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2:</strong> Cek apakah event adalah mouse motion DAN mouse dalam mode captured</li>
                 <li><strong>Baris 3:</strong> <code>rotate_y()</code> putar BODY player kiri-kanan (horizontal) sesuai gerakan mouse X</li>
                 <li><strong>Baris 4:</strong> <code>rotate_x()</code> putar HEAD atas-bawah (vertical) sesuai gerakan mouse Y</li>
@@ -1010,7 +1027,7 @@ var jc : bool`} />
                 <li><strong>Kenapa pisah body & head?</strong> Agar bisa look up/down tanpa body ikut miring (seperti FPS real)</li>
               </ul>
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mt-3 mb-2">ESC untuk Toggle Mouse:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 7-13:</strong> Tekan ESC toggle antara mouse captured (gameplay) dan visible (menu/pause)</li>
                 <li><strong>Baris 15-16:</strong> Toggle flashlight on/off dengan tombol F (atau sesuai input map)</li>
               </ul>
@@ -1059,7 +1076,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan Detail:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2-3:</strong> Jika player mati, stop semua physics processing (tidak bisa gerak)</li>
                 <li><strong>Baris 6-7:</strong> Gravity - jika tidak di lantai, velocity.y turun terus (jatuh makin cepat)</li>
                 <li><strong>Baris 10-11:</strong> Jump - tekan Space saat di lantai, set velocity.y ke atas</li>
@@ -1082,7 +1099,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan Matematis Head Bob:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Parameter time:</strong> Waktu akumulatif (t_bob) yang increment sesuai kecepatan jalan</li>
                 <li><strong>Baris 3:</strong> <code>sin(time * bob_freq)</code> = wave naik-turun untuk gerakan Y (vertical)</li>
                 <li><strong>Baris 4:</strong> <code>cos(time * bob_freq / 2)</code> = wave kiri-kanan untuk X, frekuensi setengah dari Y</li>
@@ -1108,7 +1125,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2-3:</strong> Hanya play footsteps jika di lantai DAN sedang bergerak</li>
                 <li><strong>Baris 6:</strong> Saat sprint, interval dibagi 1.5 = footsteps lebih cepat (0.5 / 1.5 = 0.33 detik)</li>
                 <li><strong>Baris 8:</strong> Increment timer setiap frame</li>
@@ -1132,7 +1149,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 6:</strong> Random pitch 1.2-1.4 biar setiap footstep sedikit beda (tidak monoton)</li>
                 <li><strong>Baris 9-10:</strong> Saat sprint, pitch lebih tinggi (1.5x) = terdengar lebih cepat dan energik</li>
                 <li><strong>Kenapa pitch bukan volume?</strong> Pitch change bikin variasi lebih natural untuk footsteps</li>
@@ -1178,7 +1195,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Flow Lengkap Saat Tertangkap:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 3-4:</strong> Guard - jika sudah dalam proses mati, ignore damage baru (prevent double damage)</li>
                 <li><strong>Baris 6:</strong> Kurangi lives (4 → 3 → 2 → 1 → 0)</li>
                 <li><strong>Baris 9:</strong> Jika lives habis (≤0), panggil die() untuk game over</li>
@@ -1188,7 +1205,7 @@ var jc : bool`} />
                 <li><strong>Baris 28-29:</strong> Tunggu 0.5s (layar hitam), lalu respawn ke posisi random</li>
                 <li><strong>Baris 32-35:</strong> Tunggu 3s lagi (animasi fade out selesai), baru unfreeze player</li>
               </ul>
-              <p className="text-sm text-gray-300 text-gray-300 mt-3">
+              <p className="text-sm text-gray-200 mt-3">
                 <strong>Total waktu freeze:</strong> 3.5 detik (0.5s + 3.0s) untuk kasih waktu UI animasi selesai 
                 dan player safe dari monster (sudah di posisi spawn baru).
               </p>
@@ -1210,7 +1227,7 @@ var jc : bool`} />
 
             <div className="bg-yellow-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-3">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Penjelasan:</p>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Baris 2:</strong> Set is_dead = true permanent (tidak di-unfreeze lagi)</li>
                 <li><strong>Baris 6-10:</strong> Play death_sound (berbeda dari caught_sound untuk variasi)</li>
                 <li><strong>Baris 12:</strong> Panggil game_over() di game_manager untuk handle transisi ke menu</li>
@@ -1231,7 +1248,7 @@ var jc : bool`} />
                 {name: "toggle_flashlight", type: "Input", default: "F", desc: "Nyalakan/matikan flashlight"},
                 {name: "ui_cancel", type: "Input", default: "ESC", desc: "Toggle mouse captured/visible"}
               ]} />
-              <p className="text-sm text-gray-300 text-gray-300 mt-3">
+              <p className="text-sm text-gray-200 mt-3">
                 <strong>Cara set Input Map:</strong> Project → Project Settings → Input Map → Tambahkan action di atas dengan key yang sesuai.
               </p>
             </div>
@@ -1246,7 +1263,7 @@ var jc : bool`} />
 │   └── Camera3D
 │       └── Flashlight (SpotLight3D)
 └── FootstepPlayer (AudioStreamPlayer)`} />
-              <p className="text-sm text-gray-300 text-gray-300 mt-3">
+              <p className="text-sm text-gray-200 mt-3">
                 <strong>Penting:</strong> Head harus Node3D biasa (bukan Camera), karena Camera akan rotate head, 
                 sedangkan body player rotate horizontal terpisah.
               </p>
@@ -1259,7 +1276,7 @@ var jc : bool`} />
           <div className="space-y-4">
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 p-4 rounded">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">🎯 Konsep-Konsep Penting yang Dipelajari</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>State Machine:</strong> Monster AI menggunakan state PATROL dan CHASE - konsep fundamental dalam game AI</li>
                 <li><strong>Async Programming:</strong> Penggunaan await untuk menunggu animasi/timer selesai tanpa blocking</li>
                 <li><strong>Tween Animation:</strong> Sistem animasi Godot untuk smooth transitions (fade, movement, rotation)</li>
@@ -1273,7 +1290,7 @@ var jc : bool`} />
 
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 p-4 rounded mt-4">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">💡 Tips Optimasi & Best Practices</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Gunakan @onready:</strong> Untuk get_node() agar lebih efisien dan aman</li>
                 <li><strong>Interval Checks:</strong> Tidak perlu cek LOS setiap frame - gunakan timer/interval</li>
                 <li><strong>Guard Clauses:</strong> Return early jika kondisi tidak valid (if not player: return)</li>
@@ -1287,7 +1304,7 @@ var jc : bool`} />
 
             <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-l-4 border-purple-500 p-4 rounded mt-4">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">🚀 Ide Pengembangan Lanjutan</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Multiple Monsters:</strong> Tambahkan lebih banyak monster dengan AI berbeda</li>
                 <li><strong>Item System:</strong> Flashlight, keys, health packs</li>
                 <li><strong>Stamina System:</strong> Player bisa sprint tapi stamina habis</li>
@@ -1302,7 +1319,7 @@ var jc : bool`} />
 
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-500 p-4 rounded mt-4">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">📚 Resource Belajar Lanjutan</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Godot Docs:</strong> docs.godotengine.org - dokumentasi resmi lengkap</li>
                 <li><strong>GDQuest:</strong> YouTube channel dengan tutorial Godot gratis berkualitas</li>
                 <li><strong>Brackeys (Godot):</strong> Tutorial game development yang mudah dipahami</li>
@@ -1315,25 +1332,25 @@ var jc : bool`} />
               <h3 className="text-lg font-semibold text-gray-100 mb-2">🔧 Troubleshooting Common Issues</h3>
               <div className="space-y-3">
                 <div>
-                  <p className="font-semibold text-sm text-gray-100">Monster stuck/tidak bergerak:</p>
+                  <p className="font-semibold text-sm text-gray-50">Monster stuck/tidak bergerak:</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Pastikan NavMesh sudah di-bake di NavigationRegion3D</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Cek patrol_radius tidak terlalu besar</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Gunakan debug print untuk lihat is_target_reachable()</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-gray-100">Monster tidak detect player:</p>
+                  <p className="font-semibold text-sm text-gray-50">Monster tidak detect player:</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Cek player sudah ada di group "player"</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Pastikan detection_radius cukup besar</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Cek collision layer RayCast dan player</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-gray-100">Audio tidak loop:</p>
+                  <p className="font-semibold text-sm text-gray-50">Audio tidak loop:</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Cek tipe audio file (WAV/OGG/MP3)</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Set loop_mode sesuai tipe file</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Pastikan AudioStreamPlayer tidak one_shot</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-gray-100">Transisi scene patah-patah:</p>
+                  <p className="font-semibold text-sm text-gray-50">Transisi scene patah-patah:</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Gunakan set_parallel(true) untuk animasi bersamaan</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Pastikan total_time dihitung dengan benar</p>
                   <p className="text-sm text-gray-300 text-gray-600">• Gunakan await untuk sinkronisasi</p>
@@ -1357,7 +1374,7 @@ var jc : bool`} />
         {/* Footer */}
         <div className="mt-12 p-8 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 rounded-2xl text-center border border-cyan-500/30 backdrop-blur">
           <p className="text-gray-300 font-medium mb-2">Dokumentasi ini dibuat dengan untuk memahami game development dengan Godot Engine</p>
-          <p className="text-2xl text-gray-300">🎮 Happy Game Development! 🚀</p>
+          <p className="text-2xl text-gray-200">🎮 Happy Game Development! 🚀</p>
         </div>
       </div>
     </div>
