@@ -242,7 +242,7 @@ const GameDocumentation = () => {
                 <p className="text-sm text-emerald-300"><strong>Kenapa penting?</strong></p>
                 <p className="text-sm text-emerald-300">
                   Tanpa delta, mobil di komputer cepat bergerak lebih kencang dari komputer lambat. 
-                  Dengan delta, semua komputer geraknya sama: <code className="bg-gray-200 px-1">velocity * delta</code>
+                  Dengan delta, semua komputer geraknya sama: <code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">velocity * delta</code>
                 </p>
               </div>
             </div>
@@ -271,10 +271,10 @@ tween.tween_property(objek, "position", Vector2(10, 5), 2.0)
                 <strong>Istilah penting:</strong>
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
-                <li><code className="bg-gray-200 px-1">create_tween()</code> = Buat "autopilot" baru</li>
-                <li><code className="bg-gray-200 px-1">tween_property()</code> = Atur properti apa yang mau dianimasikan</li>
-                <li><code className="bg-gray-200 px-1">set_loops()</code> = Ulang terus (loop)</li>
-                <li><code className="bg-gray-200 px-1">kill()</code> = Matikan animasi (stop autopilot)</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">create_tween()</code> = Buat "autopilot" baru</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">tween_property()</code> = Atur properti apa yang mau dianimasikan</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">set_loops()</code> = Ulang terus (loop)</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">kill()</code> = Matikan animasi (stop autopilot)</li>
               </ul>
             </div>
 
@@ -334,8 +334,8 @@ position.y += 1  # Sekarang jadi (5, 3, 3)`} />
                 <strong>Global vs Local:</strong>
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside">
-                <li><code className="bg-gray-200 px-1">global_position</code> = Posisi di "peta dunia"</li>
-                <li><code className="bg-gray-200 px-1">position</code> = Posisi relatif terhadap parent</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">global_position</code> = Posisi di "peta dunia"</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">position</code> = Posisi relatif terhadap parent</li>
               </ul>
             </div>
 
@@ -406,10 +406,10 @@ print("3 detik sudah lewat!")`} />
               <div className="bg-emerald-900/20 border border-emerald-700/50 p-3 rounded mt-2">
                 <p className="text-sm text-gray-200"><strong>Istilah penting:</strong></p>
                 <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
-                  <li><code className="bg-gray-200 px-1">add_child(node)</code> = Tambahkan node sebagai anak</li>
-                  <li><code className="bg-gray-200 px-1">get_parent()</code> = Ambil node parent</li>
-                  <li><code className="bg-gray-200 px-1">get_node("NamaNode")</code> = Cari node dengan nama tertentu</li>
-                  <li><code className="bg-gray-200 px-1">$NamaNode</code> = Shortcut untuk get_node (lebih singkat!)</li>
+                  <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">add_child(node)</code> = Tambahkan node sebagai anak</li>
+                  <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">get_parent()</code> = Ambil node parent</li>
+                  <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">get_node("NamaNode")</code> = Cari node dengan nama tertentu</li>
+                  <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">$NamaNode</code> = Shortcut untuk get_node (lebih singkat!)</li>
                 </ul>
               </div>
             </div>
@@ -439,10 +439,10 @@ var speed = 5.0
                 <strong>Macam-macam @export:</strong>
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
-                <li><code className="bg-gray-200 px-1">@export var hp: int</code> = Angka bulat (1, 2, 3...)</li>
-                <li><code className="bg-gray-200 px-1">@export var speed: float</code> = Angka desimal (5.5, 3.14...)</li>
-                <li><code className="bg-gray-200 px-1">@export var player: Node3D</code> = Reference ke node lain</li>
-                <li><code className="bg-gray-200 px-1">@export_range(0, 100)</code> = Angka dengan slider 0-100</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">@export var hp: int</code> = Angka bulat (1, 2, 3...)</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">@export var speed: float</code> = Angka desimal (5.5, 3.14...)</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">@export var player: Node3D</code> = Reference ke node lain</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">@export_range(0, 100)</code> = Angka dengan slider 0-100</li>
               </ul>
             </div>
 
@@ -997,10 +997,10 @@ else:
                 <strong>Penjelasan @onready:</strong> Variabel ini diisi otomatis saat node ready dengan mengambil child nodes.
               </p>
               <ul className="text-sm text-gray-300 list-disc list-inside space-y-1">
-                <li><code className="bg-gray-200 px-1">$Head</code> = Node untuk kepala (bisa rotate vertical untuk look up/down)</li>
-                <li><code className="bg-gray-200 px-1">$Head/Camera3D</code> = Camera di dalam Head (child of child)</li>
-                <li><code className="bg-gray-200 px-1">$Head/Camera3D/Flashlight</code> = Lampu senter di kamera</li>
-                <li><code className="bg-gray-200 px-1">$FootstepPlayer</code> = AudioStreamPlayer untuk footstep sounds</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">$Head</code> = Node untuk kepala (bisa rotate vertical untuk look up/down)</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">$Head/Camera3D</code> = Camera di dalam Head (child of child)</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">$Head/Camera3D/Flashlight</code> = Lampu senter di kamera</li>
+                <li><code className="bg-gray-800 px-1 text-gray-200 rounded font-mono">$FootstepPlayer</code> = AudioStreamPlayer untuk footstep sounds</li>
               </ul>
             </div>
 
