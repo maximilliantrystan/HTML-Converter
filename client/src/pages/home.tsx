@@ -1288,7 +1288,7 @@ var jc : bool`} />
               </ul>
             </div>
 
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 p-4 rounded mt-4">
+            <div className="bg-gradient-to-r from-blue-900/20 to-indigo-900/20 border border-blue-700/50 border-l-4 border-blue-500 p-4 rounded mt-4">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">💡 Tips Optimasi & Best Practices</h3>
               <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Gunakan @onready:</strong> Untuk get_node() agar lebih efisien dan aman</li>
@@ -1328,7 +1328,7 @@ var jc : bool`} />
               </ul>
             </div>
 
-            <div className="bg-gradient-to-r from-gray-50 to-slate-100 border-l-4 border-gray-500 p-4 rounded mt-4">
+            <div className="bg-gradient-to-r from-gray-800/20 to-slate-800/20 border border-gray-700/50 border-l-4 border-gray-500 p-4 rounded mt-4">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">🔧 Troubleshooting Common Issues</h3>
               <div className="space-y-3">
                 <div>
