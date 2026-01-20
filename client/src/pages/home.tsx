@@ -453,7 +453,7 @@ else:
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 p-4 rounded mt-6">
+            <div className="bg-gradient-to-r from-emerald-900/20 to-emerald-800/20 border border-emerald-700/50 border-l-4 border-emerald-500 p-4 rounded mt-6">
               <p className="text-sm text-gray-300 font-semibold text-gray-50">
                 ✅ Setelah paham konsep dasar di atas, kamu siap untuk baca penjelasan kode di bawah! 
                 Kalau lupa, bisa scroll ke atas untuk baca lagi kapan saja.
@@ -1254,7 +1254,7 @@ var jc : bool`} />
             </div>
 
             <h3 className="text-lg font-bold text-gray-100 mt-6">Struktur Node yang Dibutuhkan</h3>
-            <div className="bg-emerald-900/20 border border-emerald-700/50 border-l-4 border-green-500 p-4 rounded">
+            <div className="bg-emerald-900/20 border border-emerald-700/50 border-l-4 border-emerald-500 p-4 rounded">
               <p className="text-sm text-gray-300 font-semibold text-gray-100 mb-2">Hierarchy Scene Player:</p>
               <CodeBlock code={`Player (CharacterBody3D) ← script player.gd di sini
 ├── CollisionShape3D (bentuk collision player)
@@ -1274,7 +1274,7 @@ var jc : bool`} />
         {/* Kesimpulan & Tips */}
         <Section id="conclusion" title="🎓 Kesimpulan & Tips Pengembangan" icon={Info}>
           <div className="space-y-4">
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 p-4 rounded">
+            <div className="bg-gradient-to-r from-emerald-900/20 to-emerald-800/20 border border-emerald-700/50 border-l-4 border-emerald-500 p-4 rounded">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">🎯 Konsep-Konsep Penting yang Dipelajari</h3>
               <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>State Machine:</strong> Monster AI menggunakan state PATROL dan CHASE - konsep fundamental dalam game AI</li>
@@ -1302,7 +1302,7 @@ var jc : bool`} />
               </ul>
             </div>
 
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-l-4 border-purple-500 p-4 rounded mt-4">
+            <div className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 border border-purple-700/50 border-l-4 border-purple-500 p-4 rounded mt-4">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">🚀 Ide Pengembangan Lanjutan</h3>
               <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Multiple Monsters:</strong> Tambahkan lebih banyak monster dengan AI berbeda</li>
@@ -1317,7 +1317,7 @@ var jc : bool`} />
               </ul>
             </div>
 
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-500 p-4 rounded mt-4">
+            <div className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border border-yellow-700/50 border-l-4 border-yellow-500 p-4 rounded mt-4">
               <h3 className="text-lg font-semibold text-gray-100 mb-2">📚 Resource Belajar Lanjutan</h3>
               <ul className="space-y-2 text-sm text-gray-200">
                 <li><strong>Godot Docs:</strong> docs.godotengine.org - dokumentasi resmi lengkap</li>
